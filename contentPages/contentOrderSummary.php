@@ -6,7 +6,7 @@ if(!isset($_SESSION['ARRAY_ORDERS']) || count($_SESSION['ARRAY_ORDERS']) == 0) {
 
 $cartItems = $_SESSION['ARRAY_ORDERS'];
 $totalAmount = 0;
-$orderNumber = 'LL' . date('Ymd') . rand(1000, 9999);
+$orderNumber = isset($_SESSION['ORDER_ID']) ? 'LL' . str_pad($_SESSION['ORDER_ID'], 6, '0', STR_PAD_LEFT) : 'LL' . date('Ymd') . rand(1000, 9999);
 $customerName = isset($_SESSION['CUSTOMER_FIRST_NAME']) && isset($_SESSION['CUSTOMER_LAST_NAME']) 
     ? $_SESSION['CUSTOMER_FIRST_NAME'] . ' ' . $_SESSION['CUSTOMER_LAST_NAME'] 
     : 'Customer';
@@ -135,6 +135,7 @@ unset($_SESSION['CUSTOMER_FIRST_NAME']);
 unset($_SESSION['CUSTOMER_LAST_NAME']);
 unset($_SESSION['CUSTOMER_EMAIL']);
 unset($_SESSION['CUSTOMER_PHONE']);
+unset($_SESSION['ORDER_ID']);
 ?>
 
 <script>

@@ -1,5 +1,7 @@
 <?php
 session_start();
+include_once 'dbConnection.php';
+include_once 'lucasLoavesFunctions.php';
 
 if(isset($_POST['CHECKOUT'])) {
     // Store customer information in session
@@ -8,11 +10,19 @@ if(isset($_POST['CHECKOUT'])) {
     $_SESSION['CUSTOMER_EMAIL'] = $_POST['customerEmail'];
     $_SESSION['CUSTOMER_PHONE'] = $_POST['contactPhone'];
     
-    // In a real application, you would process payment here
-    // For now, we'll just redirect to order summary
+    // Save order to database
+    $orderId = saveOrderToDatabase($connection);
     
-    header('Location: ../orderSummary.php');
-    exit;
+    if($orderId) {
+        $_SESSION['ORDER_ID'] = $orderId;
+        header('Location: ../orderSummary.php');
+        exit;
+    } else {
+        // If order save fails, redirect back to cart with error
+        $_SESSION['CHECKOUT_ERROR'] = "Failed to process order. Please try again.";
+        header('Location: ../shoppingCart.php');
+        exit;
+    }
 }
 
 header('Location: ../shoppingCart.php');
