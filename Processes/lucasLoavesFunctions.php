@@ -1,4 +1,7 @@
 <?php
+// Include OrderItem class for session handling
+include_once 'OrderItem.php';
+
 /**
  * Get all active products from database
  */
@@ -303,25 +306,19 @@ function saveOrderToDatabase($parDBConnection) {
         $customerName = $_SESSION['CUSTOMER_FIRST_NAME'] . ' ' . $_SESSION['CUSTOMER_LAST_NAME'];
     }
     $customerEmail = isset($_SESSION['CUSTOMER_EMAIL']) ? $_SESSION['CUSTOMER_EMAIL'] : '';
-    $customerPhone = isset($_SESSION['CUSTOMER_PHONE']) ? $_SESSION['CUSTOMER_PHONE'] : '';
-    
-    // Calculate total amount
-    $totalAmount = 0;
-    foreach($_SESSION['ARRAY_ORDERS'] as $item) {
-        $totalAmount += $item->getTotalAmount();
-    }
     
     // Get first item's pickup date and time for the order
     $firstItem = $_SESSION['ARRAY_ORDERS'][0];
     $pickupDate = $firstItem->getPickUpDate();
     $pickupTime = $firstItem->getPickUpTime();
+    $pickupDatetime = $pickupDate . ' ' . $pickupTime;
     
-    // Insert into orders table
-    $sql = "INSERT INTO orders (customer_name, customer_email, customer_phone, pickup_date, pickup_time, total_amount) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+    // Insert into orders table (matches actual schema: customer_name, customer_email, pickup_datetime, status)
+    $sql = "INSERT INTO orders (customer_name, customer_email, pickup_datetime, status) 
+            VALUES (?, ?, ?, 'Pending')";
     
     $stmt = $parDBConnection->prepare($sql);
-    $stmt->bind_param("sssssd", $customerName, $customerEmail, $customerPhone, $pickupDate, $pickupTime, $totalAmount);
+    $stmt->bind_param("sss", $customerName, $customerEmail, $pickupDatetime);
     
     if(!$stmt->execute()) {
         return false;
@@ -330,22 +327,18 @@ function saveOrderToDatabase($parDBConnection) {
     $orderId = $stmt->insert_id;
     $stmt->close();
     
-    // Insert order items
-    $sql = "INSERT INTO order_items (order_id, product_id, product_name, quantity, unit_price, total_amount, pickup_date, pickup_time) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    // Insert order items (matches actual schema: order_id, product_id, quantity, unit_price)
+    $sql = "INSERT INTO order_items (order_id, product_id, quantity, unit_price) 
+            VALUES (?, ?, ?, ?)";
     
     $stmt = $parDBConnection->prepare($sql);
     
     foreach($_SESSION['ARRAY_ORDERS'] as $item) {
         $productNumber = $item->productNumber;
-        $productName = $item->getProductName();
         $quantity = $item->getQuantityOrdered();
         $unitPrice = $item->getUnitPrice();
-        $itemTotal = $item->getTotalAmount();
-        $itemPickupDate = $item->getPickUpDate();
-        $itemPickupTime = $item->getPickUpTime();
         
-        $stmt->bind_param("iisiddss", $orderId, $productNumber, $productName, $quantity, $unitPrice, $itemTotal, $itemPickupDate, $itemPickupTime);
+        $stmt->bind_param("iiid", $orderId, $productNumber, $quantity, $unitPrice);
         $stmt->execute();
     }
     

@@ -1,4 +1,6 @@
 <?php
+// Include OrderItem class BEFORE starting session
+include_once 'OrderItem.php';
 session_start();
 include_once 'dbConnection.php';
 include_once 'lucasLoavesFunctions.php';
@@ -11,7 +13,7 @@ if(isset($_POST['CHECKOUT'])) {
     $_SESSION['CUSTOMER_PHONE'] = $_POST['contactPhone'];
     
     // Save order to database
-    $orderId = saveOrderToDatabase($connection);
+    $orderId = saveOrderToDatabase($dbConnection);
     
     if($orderId) {
         $_SESSION['ORDER_ID'] = $orderId;
