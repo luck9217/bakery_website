@@ -1,0 +1,206 @@
+/* Main Layout */
+main {
+  min-height: 70vh;
+}
+
+/* Color Scheme - Brown and Black */
+:root {
+  --luca-brown: #c5a880;
+  --luca-black: #000000;
+  --luca-light-gray: #f8f9fa;
+}
+
+/* Footer Styles */
+.copyright {
+  font-size: 0.7rem;
+  color: #c8c8c9;
+}
+
+.sitemapItem {
+  text-align: center;
+}
+
+.sitemapItem a {
+  color: #c8c8c9;
+  line-height: 200%;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.sitemapItem a:hover {
+  color: var(--luca-brown);
+}
+
+.fab {
+  color: #c8c8c9;
+  transition: color 0.3s ease;
+}
+
+.fab:hover {
+  color: var(--luca-brown);
+}
+
+#footerSocial {
+  color: #c8c8c9;
+  text-align: center;
+}
+
+#navLogo,
+#footerLogo {
+  color: var(--luca-brown);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#navLogo:hover,
+#footerLogo:hover {
+  color: var(--luca-brown);
+  opacity: 0.8;
+}
+
+#sitemap-row {
+  align-items: center;
+}
+
+/* Navigation Enhancements */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--luca-brown) !important;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: var(--luca-brown);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 80%;
+}
+
+/* Card Hover Effects */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Button Styles */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--luca-brown);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8976d;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .sitemapItem {
+    text-align: left;
+  }
+  #footerSocial {
+    text-align: right;
+  }
+  #shoppingCart {
+    margin-left: auto;
+  }
+}
+
+/* Badge Animation */
+.badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Image Fade In */
+img {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Form Focus Effects */
+.form-control:focus {
+  border-color: var(--luca-brown);
+  box-shadow: 0 0 0 0.2rem rgba(197, 168, 128, 0.25);
+}
+
+/* Link Colors */
+a {
+  color: var(--luca-brown);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #b8976d;
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 10px;
+}
+
+/* Table Hover */
+.table-hover tbody tr:hover {
+  background-color: var(--luca-light-gray);
+}
